@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Markdown ke TEXT/HTML</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="app" class="max-w-4xl mx-auto p-5 bg-white shadow-lg rounded-lg">
+    <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">Markdown Viewer</h1>
+
+    <input type="text" v-model="apiUrl" placeholder="Masukkan URL API"
+      class="border border-gray-300 p-2 w-full mb-2 rounded" />
+
+    <textarea v-model="markdownInput" :disabled="apiUrl !== ''"
+      class="border border-gray-300 p-2 w-full mb-4 rounded h-40" placeholder="Atau masukkan markdown langsung di sini..."></textarea>
+
+    <button @click="fetchData"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition duration-200 mr-2">
+      <span v-if="apiUrl !== ''">
+        Ambil Data
+      </span>
+      <span v-else>
+         Converter 
+      </span>
+    </button>
+
+    <div v-if="outputContent !== ''" class="flex flex-wrap gap-2 mt-2">
+      <button
+        @click="copyContent('text')"
+        class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded">Salin: Text</button>
+      <button @click="copyContent('htmlStyled')"
+        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Salin: HTML + Tailwind</button>
+      <button @click="copyContent('htmlPlain')"
+        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">Salin: HTML Plain</button>
+    </div>
+
+    <div v-if="loading" class="mt-4 text-center">Memuat...</div>
+    <div v-if="error" class="mt-4 text-red-500 text-center">{{ error }}</div>
+
+    <div v-if="outputContent !== ''" v-html="outputContent"
+      class="output mt-4 p-4 border border-gray-300 bg-gray-100 rounded-lg text-gray-800"></div>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+
+</html>
